@@ -4,235 +4,518 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AryaCode CAD | CAD Portfolio</title>
-
-    <script type="module"
-        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
-    </script>
+    <title>AryaCode 3D</title>
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #0b0d10;
-            color: white;
-        }
-
-        header {
-            padding: 25px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        header span {
-            color: #888;
-            font-size: 14px;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 70px 20px 40px;
-        }
-
-        .hero h2 {
-            font-size: 48px;
-            margin: 0 0 15px;
-        }
-
-        .hero p {
-            color: #999;
-            font-size: 18px;
-        }
-
-        .project {
-            max-width: 1100px;
-            margin: 30px auto 80px;
-            padding: 0 25px;
-        }
-
-        .viewer {
-            width: 100%;
-            height: 600px;
-            background: #11151a;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid #252a30;
-        }
-
-        model-viewer {
+        html, body {
             width: 100%;
             height: 100%;
-            background: #11151a;
+            overflow: hidden;
+            background: #050608;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
-        .info {
-            margin-top: 35px;
+        body {
+            position: relative;
         }
 
-        .info h3 {
-            font-size: 30px;
-            margin-bottom: 10px;
+        /* ARYACODE */
+
+        .brand {
+            position: absolute;
+            top: 32px;
+            left: 40px;
+            z-index: 10;
+
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #ffffff;
         }
 
-        .info p {
-            color: #aaa;
-            line-height: 1.7;
-            max-width: 800px;
+        .brand span {
+            font-weight: 300;
+            opacity: 0.45;
         }
 
-        .tags {
+        /* MODEL VIEW */
+
+        #viewer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* SMALL LABEL */
+
+        .label {
+            position: absolute;
+            bottom: 32px;
+            left: 40px;
+            z-index: 10;
+
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+        }
+
+        /* LOADING */
+
+        .loading {
+            position: absolute;
+            inset: 0;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
+            align-items: center;
+            justify-content: center;
 
-        .tag {
-            padding: 8px 14px;
-            border-radius: 20px;
-            background: #1b1f24;
-            color: #bbb;
-            font-size: 13px;
-        }
+            color: rgba(255,255,255,0.35);
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
 
-        .buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 25px;
-        }
-
-        .button {
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            background: white;
-            color: black;
-            font-weight: bold;
-        }
-
-        .button.secondary {
-            background: #1b1f24;
-            color: white;
-            border: 1px solid #333;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            border-top: 1px solid #222;
-            color: #666;
-        }
-
-        @media (max-width: 700px) {
-            .hero h2 {
-                font-size: 34px;
-            }
-
-            .viewer {
-                height: 450px;
-            }
+            pointer-events: none;
+            transition: opacity 0.5s;
         }
     </style>
 </head>
 
 <body>
 
-<header>
-    <h1>AryaCode CAD</h1>
-    <span>OpenSCAD • 3D Design • Engineering</span>
-</header>
-
-<section class="hero">
-    <h2>CAD Portfolio</h2>
-    <p>Digital designs, mechanical concepts and 3D-printable creations.</p>
-</section>
-
-<section class="project">
-
-    <div class="viewer">
-
-        <model-viewer
-    id="cadModel"
-    src="sih.glb"
-    camera-controls
-    auto-rotate
-    rotation-per-second="20deg"
-    shadow-intensity="2"
-    exposure="0.65"
-    environment-image="neutral"
-    tone-mapping="aces"
-    interaction-prompt="auto">
-</model-viewer>
-
-<script>
-const model = document.getElementById("cadModel");
-
-model.addEventListener("load", () => {
-    const materials = model.model.materials;
-
-    materials.forEach(material => {
-        const pbr = material.pbrMetallicRoughness;
-
-        pbr.setBaseColorFactor([0.18, 0.20, 0.23, 1]);
-        pbr.setMetallicFactor(0.25);
-        pbr.setRoughnessFactor(0.45);
-    });
-});
-</script>
+    <div class="brand">
+        ARYA<span>CODE</span>
     </div>
 
-    <div class="info">
-
-        <h3>Celestial Mission Console</h3>
-
-        <p>
-            A custom-designed mission console enclosure created in OpenSCAD.
-            The design features a front faceplate, alignment dial,
-            telemetry display area, control buttons, program-sequence rail
-            and a top mission-card slot.
-        </p>
-
-        <div class="tags">
-            <span class="tag">OpenSCAD</span>
-            <span class="tag">3D Printing</span>
-            <span class="tag">CAD</span>
-            <span class="tag">Mechanical Design</span>
-        </div>
-
-        <div class="buttons">
-
-            <a class="button"
-               href="sih.stl"
-               download>
-                Download STL
-            </a>
-
-            <a class="button secondary"
-               href="sih.scad"
-               target="_blank">
-                View OpenSCAD Source
-            </a>
-
-        </div>
-
+    <div class="loading" id="loading">
+        Loading 3D
     </div>
 
-</section>
+    <div id="viewer"></div>
 
-<footer>
-    © 2026 AryaCode CAD
-</footer>
+    <div class="label">
+        3D MODEL
+    </div>
+
+
+    <!-- THREE.JS -->
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        }
+    }
+    </script>
+
+
+    <script type="module">
+
+        import * as THREE from "three";
+
+        import {
+            GLTFLoader
+        } from "three/addons/loaders/GLTFLoader.js";
+
+        import {
+            OrbitControls
+        } from "three/addons/controls/OrbitControls.js";
+
+
+        /* -------------------------
+           SETUP
+        ------------------------- */
+
+        const container =
+            document.getElementById("viewer");
+
+        const loading =
+            document.getElementById("loading");
+
+
+        const scene =
+            new THREE.Scene();
+
+        scene.background =
+            new THREE.Color(0x050608);
+
+
+        /* -------------------------
+           CAMERA
+        ------------------------- */
+
+        const camera =
+            new THREE.PerspectiveCamera(
+                40,
+                window.innerWidth /
+                window.innerHeight,
+                0.01,
+                1000
+            );
+
+
+        /* -------------------------
+           RENDERER
+        ------------------------- */
+
+        const renderer =
+            new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: false
+            });
+
+        renderer.setPixelRatio(
+            Math.min(
+                window.devicePixelRatio,
+                2
+            )
+        );
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+        renderer.outputColorSpace =
+            THREE.SRGBColorSpace;
+
+        renderer.toneMapping =
+            THREE.ACESFilmicToneMapping;
+
+        renderer.toneMappingExposure =
+            1.15;
+
+        container.appendChild(
+            renderer.domElement
+        );
+
+
+        /* -------------------------
+           LIGHTING
+        ------------------------- */
+
+        const ambient =
+            new THREE.AmbientLight(
+                0xffffff,
+                1.5
+            );
+
+        scene.add(ambient);
+
+
+        const keyLight =
+            new THREE.DirectionalLight(
+                0xffffff,
+                4
+            );
+
+        keyLight.position.set(
+            5,
+            8,
+            8
+        );
+
+        scene.add(keyLight);
+
+
+        const fillLight =
+            new THREE.DirectionalLight(
+                0xbfc9d8,
+                2.5
+            );
+
+        fillLight.position.set(
+            -6,
+            3,
+            4
+        );
+
+        scene.add(fillLight);
+
+
+        const rimLight =
+            new THREE.DirectionalLight(
+                0xffffff,
+                3
+            );
+
+        rimLight.position.set(
+            0,
+            4,
+            -8
+        );
+
+        scene.add(rimLight);
+
+
+        /* -------------------------
+           CONTROLS
+        ------------------------- */
+
+        const controls =
+            new OrbitControls(
+                camera,
+                renderer.domElement
+            );
+
+        controls.enableDamping = true;
+
+        controls.dampingFactor = 0.06;
+
+        controls.enablePan = false;
+
+        controls.autoRotate = true;
+
+        controls.autoRotateSpeed = 1.2;
+
+        controls.minDistance = 0.5;
+
+        controls.maxDistance = 20;
+
+
+        /* -------------------------
+           LOAD CAD MODEL
+        ------------------------- */
+
+        const loader =
+            new GLTFLoader();
+
+
+        loader.load(
+
+            "sih.glb",
+
+            function(gltf) {
+
+                const model =
+                    gltf.scene;
+
+
+                /* -------------------------
+                   MODEL MATERIAL
+                ------------------------- */
+
+                model.traverse(
+                    function(object) {
+
+                        if (!object.isMesh)
+                            return;
+
+
+                        object.material =
+                            new THREE.MeshStandardMaterial({
+
+                                color:
+                                    new THREE.Color(
+                                        0x8d949c
+                                    ),
+
+                                metalness:
+                                    0.25,
+
+                                roughness:
+                                    0.42
+                            });
+
+
+                        /* -------------------------
+                           CAD EDGES
+                        ------------------------- */
+
+                        const edges =
+                            new THREE.EdgesGeometry(
+                                object.geometry,
+                                25
+                            );
+
+
+                        const edgeMaterial =
+                            new THREE.LineBasicMaterial({
+
+                                color:
+                                    0x16191d,
+
+                                transparent:
+                                    true,
+
+                                opacity:
+                                    0.9
+                            });
+
+
+                        const edgeLines =
+                            new THREE.LineSegments(
+                                edges,
+                                edgeMaterial
+                            );
+
+
+                        object.add(
+                            edgeLines
+                        );
+
+                    }
+                );
+
+
+                /* -------------------------
+                   CENTER MODEL
+                ------------------------- */
+
+                const box =
+                    new THREE.Box3()
+                        .setFromObject(model);
+
+
+                const center =
+                    box.getCenter(
+                        new THREE.Vector3()
+                    );
+
+
+                model.position.sub(
+                    center
+                );
+
+
+                scene.add(model);
+
+
+                /* -------------------------
+                   CAMERA FIT
+                ------------------------- */
+
+                const size =
+                    box.getSize(
+                        new THREE.Vector3()
+                    );
+
+
+                const maxDimension =
+                    Math.max(
+                        size.x,
+                        size.y,
+                        size.z
+                    );
+
+
+                const distance =
+                    maxDimension * 2.0;
+
+
+                camera.position.set(
+                    distance * 0.8,
+                    distance * 0.45,
+                    distance
+                );
+
+
+                camera.lookAt(
+                    0,
+                    0,
+                    0
+                );
+
+
+                controls.target.set(
+                    0,
+                    0,
+                    0
+                );
+
+
+                controls.update();
+
+
+                /* -------------------------
+                   HIDE LOADING
+                ------------------------- */
+
+                loading.style.opacity = "0";
+
+            },
+
+
+            undefined,
+
+
+            function(error) {
+
+                console.error(
+                    "Model loading error:",
+                    error
+                );
+
+                loading.textContent =
+                    "MODEL ERROR";
+
+            }
+
+        );
+
+
+        /* -------------------------
+           RESIZE
+        ------------------------- */
+
+        window.addEventListener(
+            "resize",
+            function() {
+
+                camera.aspect =
+                    window.innerWidth /
+                    window.innerHeight;
+
+                camera.updateProjectionMatrix();
+
+
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
+                );
+
+            }
+        );
+
+
+        /* -------------------------
+           ANIMATION
+        ------------------------- */
+
+        function animate() {
+
+            requestAnimationFrame(
+                animate
+            );
+
+
+            controls.update();
+
+
+            renderer.render(
+                scene,
+                camera
+            );
+
+        }
+
+
+        animate();
+
+    </script>
 
 </body>
 </html>
