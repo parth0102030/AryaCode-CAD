@@ -4,57 +4,71 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>AryaCode 3D</title>
 
 <style>
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-html,
 body {
 
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
+    min-height: 100vh;
 
     background: #050608;
+
+    color: white;
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
 }
 
 
 /* =========================
-   ARYACODE
+   MAIN
+========================= */
+
+.page {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    padding: 50px 30px;
+
+    text-align: center;
+
+}
+
+
+/* =========================
+   BRAND
 ========================= */
 
 .brand {
 
-    position: fixed;
-
-    top: 30px;
-    left: 36px;
-
-    z-index: 20;
-
-    color: white;
-
-    font-size: 17px;
+    font-size: 18px;
 
     font-weight: 700;
 
-    letter-spacing: 5px;
+    letter-spacing: 6px;
+
+    margin-bottom: 35px;
+
 }
 
 .brand span {
@@ -62,77 +76,90 @@ body {
     font-weight: 300;
 
     opacity: 0.4;
+
 }
 
 
 /* =========================
-   3D VIEWER
+   3D MODEL BOX
+========================= */
+
+.model-box {
+
+    width: 650px;
+
+    height: 500px;
+
+    max-width: 100%;
+
+    margin: auto;
+
+    background: #0c0f12;
+
+    border: 1px solid #252a30;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    position: relative;
+
+}
+
+
+/* =========================
+   THREE VIEWER
 ========================= */
 
 #viewer {
 
-    position: fixed;
-
-    inset: 0;
-
     width: 100%;
+
     height: 100%;
+
+}
+
+canvas {
+
+    display: block;
+
 }
 
 
 /* =========================
-   BOTTOM LABEL
+   SMALL LABEL
 ========================= */
 
 .label {
 
-    position: fixed;
+    position: absolute;
 
-    bottom: 30px;
-    left: 36px;
+    bottom: 18px;
 
-    z-index: 20;
+    left: 22px;
 
     color:
         rgba(255,255,255,0.3);
 
-    font-size: 10px;
+    font-size: 9px;
 
     letter-spacing: 3px;
 
-    text-transform: uppercase;
 }
 
 
 /* =========================
-   LOADING
+   MOBILE
 ========================= */
 
-#loading {
+@media (max-width: 700px) {
 
-    position: fixed;
+    .model-box {
 
-    inset: 0;
+        height: 420px;
 
-    z-index: 30;
+    }
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    color:
-        rgba(255,255,255,0.4);
-
-    font-size: 10px;
-
-    letter-spacing: 4px;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.5s;
 }
 
 </style>
@@ -143,26 +170,28 @@ body {
 <body>
 
 
-<div class="brand">
-
-    ARYA<span>CODE</span>
-
-</div>
+<div class="page">
 
 
-<div id="loading">
+    <div class="brand">
 
-    LOADING 3D
+        ARYA<span>CODE</span>
 
-</div>
-
-
-<div id="viewer"></div>
+    </div>
 
 
-<div class="label">
+    <div class="model-box">
 
-    3D MODEL
+        <div id="viewer"></div>
+
+        <div class="label">
+
+            3D MODEL
+
+        </div>
+
+    </div>
+
 
 </div>
 
@@ -210,21 +239,20 @@ from
 
 
 
-/* =========================================
-   BASIC SETUP
-========================================= */
+/* =========================
+   CONTAINER
+========================= */
 
-const viewer =
+const container =
     document.getElementById(
         "viewer"
     );
 
 
-const loading =
-    document.getElementById(
-        "loading"
-    );
 
+/* =========================
+   SCENE
+========================= */
 
 const scene =
     new THREE.Scene();
@@ -232,34 +260,41 @@ const scene =
 
 scene.background =
     new THREE.Color(
-        0x050608
+        0x0c0f12
     );
 
 
 
-/* =========================================
+/* =========================
    CAMERA
-========================================= */
+========================= */
 
 const camera =
     new THREE.PerspectiveCamera(
 
         35,
 
-        window.innerWidth /
-        window.innerHeight,
+        container.clientWidth /
+        container.clientHeight,
 
         0.01,
 
-        10000
+        1000
 
     );
 
 
+camera.position.set(
+    7,
+    5,
+    9
+);
 
-/* =========================================
+
+
+/* =========================
    RENDERER
-========================================= */
+========================= */
 
 const renderer =
     new THREE.WebGLRenderer({
@@ -270,20 +305,18 @@ const renderer =
 
 
 renderer.setPixelRatio(
-
     Math.min(
         window.devicePixelRatio,
         2
     )
-
 );
 
 
 renderer.setSize(
 
-    window.innerWidth,
+    container.clientWidth,
 
-    window.innerHeight
+    container.clientHeight
 
 );
 
@@ -297,18 +330,18 @@ renderer.toneMapping =
 
 
 renderer.toneMappingExposure =
-    1.2;
+    1.15;
 
 
-viewer.appendChild(
+container.appendChild(
     renderer.domElement
 );
 
 
 
-/* =========================================
-   LIGHTING
-========================================= */
+/* =========================
+   LIGHTS
+========================= */
 
 const ambient =
     new THREE.AmbientLight(
@@ -350,7 +383,7 @@ scene.add(
 const fill =
     new THREE.DirectionalLight(
 
-        0xc8d4e0,
+        0xcbd5e1,
 
         2.5
 
@@ -358,8 +391,8 @@ const fill =
 
 
 fill.position.set(
-    -8,
-    4,
+    -6,
+    3,
     5
 );
 
@@ -369,32 +402,10 @@ scene.add(
 );
 
 
-const rim =
-    new THREE.DirectionalLight(
 
-        0xffffff,
-
-        3
-
-    );
-
-
-rim.position.set(
-    0,
-    5,
-    -10
-);
-
-
-scene.add(
-    rim
-);
-
-
-
-/* =========================================
-   ORBIT CONTROLS
-========================================= */
+/* =========================
+   CONTROLS
+========================= */
 
 const controls =
     new OrbitControls(
@@ -423,21 +434,27 @@ controls.autoRotate =
 
 
 controls.autoRotateSpeed =
-    0.45;
+    0.4;
 
+
+/*
+   IMPORTANT:
+   prevents zooming
+   ridiculously close.
+*/
 
 controls.minDistance =
-    0.01;
+    4;
 
 
 controls.maxDistance =
-    10000;
+    20;
 
 
 
-/* =========================================
-   LOAD GLB
-========================================= */
+/* =========================
+   LOAD MODEL
+========================= */
 
 const loader =
     new GLTFLoader();
@@ -455,10 +472,9 @@ loader.load(
             gltf.scene;
 
 
-
-        /* =================================
-           MATERIAL + EDGES
-        ================================= */
+        /* =====================
+           MATERIAL
+        ===================== */
 
         model.traverse(
 
@@ -469,37 +485,31 @@ loader.load(
                     return;
 
 
-
-                /*
-                   DARK GRAPHITE BODY
-                */
-
                 object.material =
                     new THREE.MeshStandardMaterial({
 
                         color:
-                            0x343a40,
+                            0x555d66,
 
                         metalness:
                             0.15,
 
                         roughness:
-                            0.5
+                            0.48
 
                     });
 
 
-
-                /*
-                   CAD OUTLINE
-                */
+                /* =================
+                   EDGES
+                ================= */
 
                 const edges =
                     new THREE.EdgesGeometry(
 
                         object.geometry,
 
-                        20
+                        15
 
                     );
 
@@ -508,18 +518,18 @@ loader.load(
                     new THREE.LineBasicMaterial({
 
                         color:
-                            0xdfe3e8,
+                            0xe5e7eb,
 
                         transparent:
                             true,
 
                         opacity:
-                            0.75
+                            0.7
 
                     });
 
 
-                const outline =
+                const lines =
                     new THREE.LineSegments(
 
                         edges,
@@ -530,7 +540,7 @@ loader.load(
 
 
                 object.add(
-                    outline
+                    lines
                 );
 
             }
@@ -539,79 +549,25 @@ loader.load(
 
 
 
-        /* =================================
-           NORMALIZE MODEL
-           
-           THIS IS THE IMPORTANT PART.
-           
-           We scale the entire CAD model
-           to a predictable size regardless
-           of the original GLB dimensions.
-        ================================= */
+        /* =====================
+           CENTER MODEL
+        ===================== */
 
-        const initialBox =
+        const box =
             new THREE.Box3()
                 .setFromObject(
                     model
                 );
 
 
-        const initialSize =
-            initialBox.getSize(
-                new THREE.Vector3()
-            );
-
-
-        const initialMax =
-            Math.max(
-
-                initialSize.x,
-
-                initialSize.y,
-
-                initialSize.z
-
-            );
-
-
-        /*
-           Make model exactly
-           4 units across.
-        */
-
-        const TARGET_SIZE = 4;
-
-
-        const scale =
-            TARGET_SIZE /
-            initialMax;
-
-
-        model.scale.setScalar(
-            scale
-        );
-
-
-
-        /* =================================
-           RECENTER AFTER SCALING
-        ================================= */
-
-        const finalBox =
-            new THREE.Box3()
-                .setFromObject(
-                    model
-                );
-
-
-        const finalCenter =
-            finalBox.getCenter(
+        const center =
+            box.getCenter(
                 new THREE.Vector3()
             );
 
 
         model.position.sub(
-            finalCenter
+            center
         );
 
 
@@ -621,66 +577,17 @@ loader.load(
 
 
 
-        /* =================================
-           PERFECT CAMERA FIT
-        ================================= */
-
-        const sphere =
-            new THREE.Sphere();
-
-
-        finalBox.setFromObject(
-            model
-        );
-
-
-        finalBox.getBoundingSphere(
-            sphere
-        );
-
-
-        const radius =
-            sphere.radius;
-
-
-        const fov =
-            THREE.MathUtils.degToRad(
-                camera.fov
-            );
-
-
-        /*
-           Calculate exact distance
-           needed to fit model.
-        */
-
-        const distance =
-            radius /
-            Math.sin(
-                fov / 2
-            );
-
-
-        /*
-           Extra breathing room.
-        */
-
-        const finalDistance =
-            distance * 1.55;
-
-
-
-        /* =================================
-           CAMERA POSITION
-        ================================= */
+        /* =====================
+           FIXED CAMERA
+        ===================== */
 
         camera.position.set(
 
-            finalDistance,
+            7,
 
-            finalDistance * 0.55,
+            4.5,
 
-            finalDistance
+            9
 
         );
 
@@ -701,15 +608,6 @@ loader.load(
 
         controls.update();
 
-
-
-        /* =================================
-           DONE
-        ================================= */
-
-        loading.style.opacity =
-            "0";
-
     },
 
 
@@ -719,12 +617,9 @@ loader.load(
     function(error) {
 
         console.error(
+            "Could not load model:",
             error
         );
-
-
-        loading.textContent =
-            "MODEL ERROR";
 
     }
 
@@ -732,9 +627,9 @@ loader.load(
 
 
 
-/* =========================================
+/* =========================
    RESIZE
-========================================= */
+========================= */
 
 window.addEventListener(
 
@@ -745,8 +640,8 @@ window.addEventListener(
 
         camera.aspect =
 
-            window.innerWidth /
-            window.innerHeight;
+            container.clientWidth /
+            container.clientHeight;
 
 
         camera.updateProjectionMatrix();
@@ -754,9 +649,9 @@ window.addEventListener(
 
         renderer.setSize(
 
-            window.innerWidth,
+            container.clientWidth,
 
-            window.innerHeight
+            container.clientHeight
 
         );
 
@@ -766,34 +661,27 @@ window.addEventListener(
 
 
 
-/* =========================================
-   RENDER LOOP
-========================================= */
+/* =========================
+   ANIMATION
+========================= */
 
 function animate() {
-
 
     requestAnimationFrame(
         animate
     );
 
-
     controls.update();
 
-
     renderer.render(
-
         scene,
-
         camera
-
     );
 
 }
 
 
 animate();
-
 
 </script>
 
