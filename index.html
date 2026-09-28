@@ -3,145 +3,139 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>AryaCode 3D</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <style>
+<title>AryaCode 3D</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
 
-        html,
-        body {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-            width: 100%;
-            height: 100%;
+html,
+body {
 
-            overflow: hidden;
+    width: 100%;
+    height: 100%;
 
-            background: #050608;
+    overflow: hidden;
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-        }
+    background: #050608;
 
-
-        /* -------------------------
-           ARYACODE BRAND
-        ------------------------- */
-
-        .brand {
-
-            position: absolute;
-
-            top: 32px;
-            left: 40px;
-
-            z-index: 10;
-
-            color: white;
-
-            font-size: 17px;
-
-            font-weight: 700;
-
-            letter-spacing: 5px;
-        }
-
-        .brand span {
-
-            font-weight: 300;
-
-            opacity: 0.45;
-        }
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
 
 
-        /* -------------------------
-           3D VIEWER
-        ------------------------- */
+/* =========================
+   ARYACODE
+========================= */
 
-        #viewer {
+.brand {
 
-            position: absolute;
+    position: fixed;
 
-            inset: 0;
+    top: 30px;
+    left: 36px;
 
-            width: 100%;
-            height: 100%;
-        }
+    z-index: 20;
 
-        canvas {
+    color: white;
 
-            display: block;
+    font-size: 17px;
 
-            width: 100%;
-            height: 100%;
-        }
+    font-weight: 700;
 
+    letter-spacing: 5px;
+}
 
-        /* -------------------------
-           BOTTOM LABEL
-        ------------------------- */
+.brand span {
 
-        .label {
+    font-weight: 300;
 
-            position: absolute;
-
-            bottom: 32px;
-            left: 40px;
-
-            z-index: 10;
-
-            color:
-                rgba(255,255,255,0.35);
-
-            font-size: 10px;
-
-            letter-spacing: 3px;
-
-            text-transform: uppercase;
-        }
+    opacity: 0.4;
+}
 
 
-        /* -------------------------
-           LOADING
-        ------------------------- */
+/* =========================
+   3D VIEWER
+========================= */
 
-        .loading {
+#viewer {
 
-            position: absolute;
+    position: fixed;
 
-            inset: 0;
+    inset: 0;
 
-            display: flex;
+    width: 100%;
+    height: 100%;
+}
 
-            align-items: center;
 
-            justify-content: center;
+/* =========================
+   BOTTOM LABEL
+========================= */
 
-            color:
-                rgba(255,255,255,0.35);
+.label {
 
-            font-size: 10px;
+    position: fixed;
 
-            letter-spacing: 4px;
+    bottom: 30px;
+    left: 36px;
 
-            text-transform: uppercase;
+    z-index: 20;
 
-            pointer-events: none;
+    color:
+        rgba(255,255,255,0.3);
 
-            transition:
-                opacity 0.5s;
-        }
+    font-size: 10px;
 
-    </style>
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+#loading {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 30;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color:
+        rgba(255,255,255,0.4);
+
+    font-size: 10px;
+
+    letter-spacing: 4px;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.5s;
+}
+
+</style>
 
 </head>
 
@@ -149,156 +143,613 @@
 <body>
 
 
-    <!-- BRAND -->
+<div class="brand">
 
-    <div class="brand">
+    ARYA<span>CODE</span>
 
-        ARYA<span>CODE</span>
-
-    </div>
+</div>
 
 
-    <!-- LOADING -->
+<div id="loading">
 
-    <div
-        class="loading"
-        id="loading">
+    LOADING 3D
 
-        Loading 3D
-
-    </div>
+</div>
 
 
-    <!-- VIEWER -->
-
-    <div id="viewer"></div>
+<div id="viewer"></div>
 
 
-    <!-- LABEL -->
+<div class="label">
 
-    <div class="label">
+    3D MODEL
 
-        3D MODEL
-
-    </div>
+</div>
 
 
-    <!-- THREE.JS -->
 
-    <script type="importmap">
+<script type="importmap">
 
-    {
-        "imports": {
+{
 
-            "three":
-            "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "imports": {
 
-            "three/addons/":
-            "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        "three":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
 
-        }
+        "three/addons/":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+
     }
 
-    </script>
+}
+
+</script>
 
 
-    <script type="module">
+
+<script type="module">
 
 
-        import * as THREE
-        from "three";
+import * as THREE
+from "three";
 
 
-        import {
-
-            GLTFLoader
-
-        } from
-        "three/addons/loaders/GLTFLoader.js";
-
-
-        import {
-
-            OrbitControls
-
-        } from
-        "three/addons/controls/OrbitControls.js";
+import {
+    GLTFLoader
+}
+from
+"three/addons/loaders/GLTFLoader.js";
 
 
-        /* =========================
-           ELEMENTS
-        ========================= */
-
-        const container =
-            document.getElementById(
-                "viewer"
-            );
+import {
+    OrbitControls
+}
+from
+"three/addons/controls/OrbitControls.js";
 
 
-        const loading =
-            document.getElementById(
-                "loading"
-            );
+
+/* =========================================
+   BASIC SETUP
+========================================= */
+
+const viewer =
+    document.getElementById(
+        "viewer"
+    );
 
 
-        /* =========================
-           SCENE
-        ========================= */
-
-        const scene =
-            new THREE.Scene();
+const loading =
+    document.getElementById(
+        "loading"
+    );
 
 
-        scene.background =
-            new THREE.Color(
-                0x050608
-            );
+const scene =
+    new THREE.Scene();
 
 
-        /* =========================
-           CAMERA
-        ========================= */
-
-        const camera =
-            new THREE.PerspectiveCamera(
-
-                40,
-
-                window.innerWidth /
-                window.innerHeight,
-
-                0.01,
-
-                1000
-
-            );
+scene.background =
+    new THREE.Color(
+        0x050608
+    );
 
 
-        /* =========================
-           RENDERER
-        ========================= */
 
-        const renderer =
-            new THREE.WebGLRenderer({
+/* =========================================
+   CAMERA
+========================================= */
 
-                antialias: true,
+const camera =
+    new THREE.PerspectiveCamera(
 
-                alpha: false
+        35,
 
-            });
+        window.innerWidth /
+        window.innerHeight,
+
+        0.01,
+
+        10000
+
+    );
 
 
-        renderer.setPixelRatio(
 
-            Math.min(
+/* =========================================
+   RENDERER
+========================================= */
 
-                window.devicePixelRatio,
+const renderer =
+    new THREE.WebGLRenderer({
 
-                2
+        antialias: true
 
-            )
+    });
+
+
+renderer.setPixelRatio(
+
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+
+);
+
+
+renderer.setSize(
+
+    window.innerWidth,
+
+    window.innerHeight
+
+);
+
+
+renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+
+renderer.toneMapping =
+    THREE.ACESFilmicToneMapping;
+
+
+renderer.toneMappingExposure =
+    1.2;
+
+
+viewer.appendChild(
+    renderer.domElement
+);
+
+
+
+/* =========================================
+   LIGHTING
+========================================= */
+
+const ambient =
+    new THREE.AmbientLight(
+
+        0xffffff,
+
+        1.5
+
+    );
+
+
+scene.add(
+    ambient
+);
+
+
+const key =
+    new THREE.DirectionalLight(
+
+        0xffffff,
+
+        4
+
+    );
+
+
+key.position.set(
+    5,
+    8,
+    10
+);
+
+
+scene.add(
+    key
+);
+
+
+const fill =
+    new THREE.DirectionalLight(
+
+        0xc8d4e0,
+
+        2.5
+
+    );
+
+
+fill.position.set(
+    -8,
+    4,
+    5
+);
+
+
+scene.add(
+    fill
+);
+
+
+const rim =
+    new THREE.DirectionalLight(
+
+        0xffffff,
+
+        3
+
+    );
+
+
+rim.position.set(
+    0,
+    5,
+    -10
+);
+
+
+scene.add(
+    rim
+);
+
+
+
+/* =========================================
+   ORBIT CONTROLS
+========================================= */
+
+const controls =
+    new OrbitControls(
+
+        camera,
+
+        renderer.domElement
+
+    );
+
+
+controls.enableDamping =
+    true;
+
+
+controls.dampingFactor =
+    0.06;
+
+
+controls.enablePan =
+    false;
+
+
+controls.autoRotate =
+    true;
+
+
+controls.autoRotateSpeed =
+    0.45;
+
+
+controls.minDistance =
+    0.01;
+
+
+controls.maxDistance =
+    10000;
+
+
+
+/* =========================================
+   LOAD GLB
+========================================= */
+
+const loader =
+    new GLTFLoader();
+
+
+loader.load(
+
+    "sih.glb",
+
+
+    function(gltf) {
+
+
+        const model =
+            gltf.scene;
+
+
+
+        /* =================================
+           MATERIAL + EDGES
+        ================================= */
+
+        model.traverse(
+
+            function(object) {
+
+
+                if (!object.isMesh)
+                    return;
+
+
+
+                /*
+                   DARK GRAPHITE BODY
+                */
+
+                object.material =
+                    new THREE.MeshStandardMaterial({
+
+                        color:
+                            0x343a40,
+
+                        metalness:
+                            0.15,
+
+                        roughness:
+                            0.5
+
+                    });
+
+
+
+                /*
+                   CAD OUTLINE
+                */
+
+                const edges =
+                    new THREE.EdgesGeometry(
+
+                        object.geometry,
+
+                        20
+
+                    );
+
+
+                const edgeMaterial =
+                    new THREE.LineBasicMaterial({
+
+                        color:
+                            0xdfe3e8,
+
+                        transparent:
+                            true,
+
+                        opacity:
+                            0.75
+
+                    });
+
+
+                const outline =
+                    new THREE.LineSegments(
+
+                        edges,
+
+                        edgeMaterial
+
+                    );
+
+
+                object.add(
+                    outline
+                );
+
+            }
 
         );
+
+
+
+        /* =================================
+           NORMALIZE MODEL
+           
+           THIS IS THE IMPORTANT PART.
+           
+           We scale the entire CAD model
+           to a predictable size regardless
+           of the original GLB dimensions.
+        ================================= */
+
+        const initialBox =
+            new THREE.Box3()
+                .setFromObject(
+                    model
+                );
+
+
+        const initialSize =
+            initialBox.getSize(
+                new THREE.Vector3()
+            );
+
+
+        const initialMax =
+            Math.max(
+
+                initialSize.x,
+
+                initialSize.y,
+
+                initialSize.z
+
+            );
+
+
+        /*
+           Make model exactly
+           4 units across.
+        */
+
+        const TARGET_SIZE = 4;
+
+
+        const scale =
+            TARGET_SIZE /
+            initialMax;
+
+
+        model.scale.setScalar(
+            scale
+        );
+
+
+
+        /* =================================
+           RECENTER AFTER SCALING
+        ================================= */
+
+        const finalBox =
+            new THREE.Box3()
+                .setFromObject(
+                    model
+                );
+
+
+        const finalCenter =
+            finalBox.getCenter(
+                new THREE.Vector3()
+            );
+
+
+        model.position.sub(
+            finalCenter
+        );
+
+
+        scene.add(
+            model
+        );
+
+
+
+        /* =================================
+           PERFECT CAMERA FIT
+        ================================= */
+
+        const sphere =
+            new THREE.Sphere();
+
+
+        finalBox.setFromObject(
+            model
+        );
+
+
+        finalBox.getBoundingSphere(
+            sphere
+        );
+
+
+        const radius =
+            sphere.radius;
+
+
+        const fov =
+            THREE.MathUtils.degToRad(
+                camera.fov
+            );
+
+
+        /*
+           Calculate exact distance
+           needed to fit model.
+        */
+
+        const distance =
+            radius /
+            Math.sin(
+                fov / 2
+            );
+
+
+        /*
+           Extra breathing room.
+        */
+
+        const finalDistance =
+            distance * 1.55;
+
+
+
+        /* =================================
+           CAMERA POSITION
+        ================================= */
+
+        camera.position.set(
+
+            finalDistance,
+
+            finalDistance * 0.55,
+
+            finalDistance
+
+        );
+
+
+        camera.lookAt(
+            0,
+            0,
+            0
+        );
+
+
+        controls.target.set(
+            0,
+            0,
+            0
+        );
+
+
+        controls.update();
+
+
+
+        /* =================================
+           DONE
+        ================================= */
+
+        loading.style.opacity =
+            "0";
+
+    },
+
+
+    undefined,
+
+
+    function(error) {
+
+        console.error(
+            error
+        );
+
+
+        loading.textContent =
+            "MODEL ERROR";
+
+    }
+
+);
+
+
+
+/* =========================================
+   RESIZE
+========================================= */
+
+window.addEventListener(
+
+    "resize",
+
+    function() {
+
+
+        camera.aspect =
+
+            window.innerWidth /
+            window.innerHeight;
+
+
+        camera.updateProjectionMatrix();
 
 
         renderer.setSize(
@@ -309,462 +760,42 @@
 
         );
 
+    }
 
-        renderer.outputColorSpace =
-            THREE.SRGBColorSpace;
+);
 
 
-        renderer.toneMapping =
-            THREE.ACESFilmicToneMapping;
 
+/* =========================================
+   RENDER LOOP
+========================================= */
 
-        renderer.toneMappingExposure =
-            1.25;
+function animate() {
 
 
-        container.appendChild(
-            renderer.domElement
-        );
+    requestAnimationFrame(
+        animate
+    );
 
 
-        /* =========================
-           LIGHTING
-        ========================= */
+    controls.update();
 
 
-        const ambient =
-            new THREE.AmbientLight(
+    renderer.render(
 
-                0xffffff,
+        scene,
 
-                1.8
+        camera
 
-            );
+    );
 
+}
 
-        scene.add(
-            ambient
-        );
 
+animate();
 
-        const keyLight =
-            new THREE.DirectionalLight(
 
-                0xffffff,
-
-                5
-
-            );
-
-
-        keyLight.position.set(
-
-            5,
-
-            8,
-
-            10
-
-        );
-
-
-        scene.add(
-            keyLight
-        );
-
-
-        const fillLight =
-            new THREE.DirectionalLight(
-
-                0xc9d6e5,
-
-                3
-
-            );
-
-
-        fillLight.position.set(
-
-            -8,
-
-            3,
-
-            5
-
-        );
-
-
-        scene.add(
-            fillLight
-        );
-
-
-        const rimLight =
-            new THREE.DirectionalLight(
-
-                0xffffff,
-
-                4
-
-            );
-
-
-        rimLight.position.set(
-
-            0,
-
-            5,
-
-            -10
-
-        );
-
-
-        scene.add(
-            rimLight
-        );
-
-
-        /* =========================
-           CONTROLS
-        ========================= */
-
-        const controls =
-            new OrbitControls(
-
-                camera,
-
-                renderer.domElement
-
-            );
-
-
-        controls.enableDamping =
-            true;
-
-
-        controls.dampingFactor =
-            0.06;
-
-
-        controls.enablePan =
-            false;
-
-
-        controls.autoRotate =
-            true;
-
-
-        controls.autoRotateSpeed =
-            0.5;
-
-
-        controls.minDistance =
-            0.5;
-
-
-        controls.maxDistance =
-            30;
-
-
-        /* =========================
-           LOAD MODEL
-        ========================= */
-
-        const loader =
-            new GLTFLoader();
-
-
-        loader.load(
-
-            "sih.glb",
-
-
-            function(gltf) {
-
-
-                const model =
-                    gltf.scene;
-
-
-                /* =====================
-                   MODEL MATERIAL
-                ===================== */
-
-                model.traverse(
-
-                    function(object) {
-
-
-                        if (
-                            !object.isMesh
-                        )
-                            return;
-
-
-                        /*
-                           DARK GRAPHITE
-                           MATERIAL
-                        */
-
-                        object.material =
-                            new THREE.MeshStandardMaterial({
-
-                                color:
-                                    new THREE.Color(
-                                        0x3a4148
-                                    ),
-
-                                metalness:
-                                    0.20,
-
-                                roughness:
-                                    0.48
-
-                            });
-
-
-                        /* =================
-                           CAD EDGE LINES
-                        ================= */
-
-                        const edges =
-                            new THREE.EdgesGeometry(
-
-                                object.geometry,
-
-                                15
-
-                            );
-
-
-                        const edgeMaterial =
-                            new THREE.LineBasicMaterial({
-
-                                color:
-                                    0xe5e7eb,
-
-                                transparent:
-                                    true,
-
-                                opacity:
-                                    0.80
-
-                            });
-
-
-                        const edgeLines =
-                            new THREE.LineSegments(
-
-                                edges,
-
-                                edgeMaterial
-
-                            );
-
-
-                        object.add(
-                            edgeLines
-                        );
-
-                    }
-
-                );
-
-
-                /* =====================
-                   FIND MODEL BOUNDS
-                ===================== */
-
-                const box =
-                    new THREE.Box3()
-                        .setFromObject(
-                            model
-                        );
-
-
-                const center =
-                    box.getCenter(
-
-                        new THREE.Vector3()
-
-                    );
-
-
-                model.position.sub(
-                    center
-                );
-
-
-                scene.add(
-                    model
-                );
-
-
-                /* =====================
-                   MODEL SIZE
-                ===================== */
-
-                const size =
-                    box.getSize(
-
-                        new THREE.Vector3()
-
-                    );
-
-
-                const maxDimension =
-                    Math.max(
-
-                        size.x,
-
-                        size.y,
-
-                        size.z
-
-                    );
-
-
-                /*
-                   FARTHER CAMERA
-                   = SMALLER MODEL
-                */
-
-                const distance =
-                    maxDimension * 12;
-
-
-                camera.position.set(
-
-                    distance * 0.8,
-
-                    distance * 0.45,
-
-                    distance
-
-                );
-
-
-                camera.lookAt(
-
-                    0,
-
-                    0,
-
-                    0
-
-                );
-
-
-                controls.target.set(
-
-                    0,
-
-                    0,
-
-                    0
-
-                );
-
-
-                controls.update();
-
-
-                /* =====================
-                   FINISHED
-                ===================== */
-
-                loading.style.opacity =
-                    "0";
-
-            },
-
-
-            undefined,
-
-
-            function(error) {
-
-                console.error(
-
-                    "3D model error:",
-
-                    error
-
-                );
-
-
-                loading.textContent =
-                    "MODEL ERROR";
-
-            }
-
-        );
-
-
-        /* =========================
-           RESIZE
-        ========================= */
-
-        window.addEventListener(
-
-            "resize",
-
-            function() {
-
-
-                camera.aspect =
-
-                    window.innerWidth /
-                    window.innerHeight;
-
-
-                camera.updateProjectionMatrix();
-
-
-                renderer.setSize(
-
-                    window.innerWidth,
-
-                    window.innerHeight
-
-                );
-
-            }
-
-        );
-
-
-        /* =========================
-           ANIMATION
-        ========================= */
-
-        function animate() {
-
-
-            requestAnimationFrame(
-                animate
-            );
-
-
-            controls.update();
-
-
-            renderer.render(
-
-                scene,
-
-                camera
-
-            );
-
-        }
-
-
-        animate();
-
-
-    </script>
+</script>
 
 </body>
 
