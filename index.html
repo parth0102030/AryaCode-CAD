@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AryaCode CAD | CAD Portfolio</title>
+
+    <script type="module"
+        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0d10;
+            color: white;
+        }
+
+        header {
+            padding: 25px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        header span {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 70px 20px 40px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin: 0 0 15px;
+        }
+
+        .hero p {
+            color: #999;
+            font-size: 18px;
+        }
+
+        .project {
+            max-width: 1100px;
+            margin: 30px auto 80px;
+            padding: 0 25px;
+        }
+
+        .viewer {
+            width: 100%;
+            height: 600px;
+            background: #11151a;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #252a30;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background: #11151a;
+        }
+
+        .info {
+            margin-top: 35px;
+        }
+
+        .info h3 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .info p {
+            color: #aaa;
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .tag {
+            padding: 8px 14px;
+            border-radius: 20px;
+            background: #1b1f24;
+            color: #bbb;
+            font-size: 13px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .button {
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: white;
+            color: black;
+            font-weight: bold;
+        }
+
+        .button.secondary {
+            background: #1b1f24;
+            color: white;
+            border: 1px solid #333;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid #222;
+            color: #666;
+        }
+
+        @media (max-width: 700px) {
+            .hero h2 {
+                font-size: 34px;
+            }
+
+            .viewer {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>AryaCode CAD</h1>
+    <span>OpenSCAD • 3D Design • Engineering</span>
+</header>
+
+<section class="hero">
+    <h2>CAD Portfolio</h2>
+    <p>Digital designs, mechanical concepts and 3D-printable creations.</p>
+</section>
+
+<section class="project">
+
+    <div class="viewer">
+
+        <model-viewer
+            src="sih.stl"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            exposure="1"
+            interaction-prompt="auto">
+        </model-viewer>
+
+    </div>
+
+    <div class="info">
+
+        <h3>Celestial Mission Console</h3>
+
+        <p>
+            A custom-designed mission console enclosure created in OpenSCAD.
+            The design features a front faceplate, alignment dial,
+            telemetry display area, control buttons, program-sequence rail
+            and a top mission-card slot.
+        </p>
+
+        <div class="tags">
+            <span class="tag">OpenSCAD</span>
+            <span class="tag">3D Printing</span>
+            <span class="tag">CAD</span>
+            <span class="tag">Mechanical Design</span>
+        </div>
+
+        <div class="buttons">
+
+            <a class="button"
+               href="sih.stl"
+               download>
+                Download STL
+            </a>
+
+            <a class="button secondary"
+               href="sih.scad"
+               target="_blank">
+                View OpenSCAD Source
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    © 2026 AryaCode CAD
+</footer>
+
+</body>
+</html>
